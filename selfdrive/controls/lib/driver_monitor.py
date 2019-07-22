@@ -3,12 +3,12 @@ from common.realtime import sec_since_boot, DT_CTRL, DT_DMON
 from selfdrive.controls.lib.drive_helpers import create_event, EventTypes as ET
 from common.filter_simple import FirstOrderFilter
 
-_AWARENESS_TIME = 180        # 3 minutes limit without user touching steering wheels make the car enter a terminal status
-_AWARENESS_PRE_TIME = 20.    # a first alert is issued 20s before expiration
-_AWARENESS_PROMPT_TIME = 5.  # a second alert is issued 5s before start decelerating the car
-_DISTRACTED_TIME = 7.
-_DISTRACTED_PRE_TIME = 4.
-_DISTRACTED_PROMPT_TIME = 2.
+_AWARENESS_TIME = 1800        # 3 minutes limit without user touching steering wheels make the car enter a terminal status
+_AWARENESS_PRE_TIME = 200.    # a first alert is issued 20s before expiration
+_AWARENESS_PROMPT_TIME = 50.  # a second alert is issued 5s before start decelerating the car
+_DISTRACTED_TIME = 70.
+_DISTRACTED_PRE_TIME = 40.
+_DISTRACTED_PROMPT_TIME = 20.
 # model output refers to center of cropped image, so need to apply the x displacement offset
 _PITCH_WEIGHT = 1.5  # pitch matters a lot more
 _METRIC_THRESHOLD = 0.4
