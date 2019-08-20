@@ -4,12 +4,12 @@ import time
 from selfdrive.can.parser import CANParser
 from cereal import car
 from common.realtime import sec_since_boot
-from selfdrive.car.toyota.values import NO_DSU_CAR, DBC, TSS2_CAR
+from selfdrive.car.toyota.values import NO_DSU_CAR, DBC#, TSS2_CAR
 
 def _create_radar_can_parser(car_fingerprint):
   dbc_f = DBC[car_fingerprint]['radar']
 
-  if car_fingerprint in TSS2_CAR:
+  if car_fingerprint in NO_DSU_CAR:
     RADAR_A_MSGS = list(range(0x180, 0x190))
     RADAR_B_MSGS = list(range(0x190, 0x1a0))
   else:
@@ -36,7 +36,7 @@ class RadarInterface(object):
 
     self.delay = 0.0  # Delay of radar
 
-    if CP.carFingerprint in TSS2_CAR:
+    if CP.carFingerprint in NO_DSU_CAR:
       self.RADAR_A_MSGS = list(range(0x180, 0x190))
       self.RADAR_B_MSGS = list(range(0x190, 0x1a0))
     else:
@@ -51,7 +51,8 @@ class RadarInterface(object):
 
     # No radar dbc for cars without DSU which are not TSS 2.0
     # TODO: make a adas dbc file for dsu-less models
-    self.no_radar = CP.carFingerprint in NO_DSU_CAR and CP.carFingerprint not in TSS2_CAR
+    # little hack - if NO_DSU radar is swapped for a TSS2 one, enable long control since 0x343 is no longer on the bus
+    self.no_radar = not CP.enableDSU #CP.carFingerprint in NO_DSU_CAR and CP.carFingerprint not in TSS2_CAR
 
   def update(self, can_strings):
     if self.no_radar:
